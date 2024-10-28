@@ -5,23 +5,17 @@ from datetime import datetime
 
 FILENAME = 'task_data.json'
 
-def create_json():
-    "We create and initialise JSON File"
-
-    tasks = []
-
-    # Write the data to a JSON file
-    with open(FILENAME, 'w') as json_file:
-        json.dump(tasks, json_file, indent=4)
-    print(f"JSON file '{FILENAME}' created successfully.")
-
-
 class TaskTracker:
     def __init__(self,filename):
         self.filename = filename
         
     def load_task(self):
         # Load JSON data from a file
+        if not os.path.isfile('task_data.json'):
+            with open('task_data.json', 'w') as json_file:
+                json.dump([], json_file, indent=4)
+            print(f"JSON file '{FILENAME}' created successfully.")
+
         with open(self.filename, 'r') as json_file:
             data = json.load(json_file)
         return data
@@ -96,48 +90,40 @@ class TaskTracker:
         self.save_task(tasks)
         print(f'Task (ID: {task_id}) make to {status}') 
 
-
-if __name__ == "__main__":
-    # Resetting Task list every run
-    create_json()
-
+def main():
     tracker = TaskTracker(FILENAME)
 
-    while True:
-        input_text = input()
+    if sys.argv[1].lower() == 'add':
+        tracker.add_task(sys.argv[-1])
 
-        if input_text.lower() == "quit":
-            print("Program is closing")
-            break
-        
-        if input_text.split()[0].lower() == 'add':
-            task = input_text.split('"')[1]
-            tracker.add_task(task)
+    if sys.argv[1].lower() == 'update':
+            task_id = int(sys.argv[2])
+            tracker.update_task(task_id, sys.argv[-1])
 
-        if input_text.split()[0].lower() == 'update':
-            task_id = int(input_text.split()[1])
-            task = input_text.split('"')[1]
-            tracker.update_task(task_id, task)
+    if sys.argv[1].lower() == 'delete':
+        task_id = int(sys.argv[-1])
+        tracker.update_task(task_id)
+    
+    if sys.argv[-1].lower() == 'list' and len(sys.argv) == 2:
+        tracker.all_tasks()
 
-        if input_text.split()[0].lower() == 'delete':
-            task_id = int(input_text.split()[1])
-            tracker.remove_task(task_id)
+    if sys.argv[1].lower() == 'list' and len(sys.argv) > 2:
+        if sys.argv[-1] == 'done':
+            tracker.print_by_task('done')
+        if sys.argv[-1] == 'todo':
+            tracker.print_by_task('todo')
+        if sys.argv[-1] == 'in-progress':
+            tracker.print_by_task('in-progress')
 
-        if input_text.split()[0].lower() == 'list' and len(input_text.split()[0]) == 1:
-            tracker.all_tasks()
+    if sys.argv[1].lower() == 'mark-in-progress':
+        task_id = int(sys.argv[-1])
+        tracker.mark_task(task_id, 'in-progress')
 
-        if input_text.split()[0].lower() == 'list' and len(input_text.split()[0]) > 1:
-            if input_text.split()[1] == 'done':
-                tracker.print_by_task('done')
-            if input_text.split()[1] == 'todo':
-                tracker.print_by_task('todo')
-            if input_text.split()[1] == 'in-progress':
-                tracker.print_by_task('in-progress')
-
-        if input_text.split()[0].lower() == 'mark-in-progress':
-            task_id = int(input_text.split()[1])
-            tracker.mark_task(task_id, 'in-progress')
-        
-        if input_text.split()[0].lower() == 'mark-done':
-            task_id = int(input_text.split()[1])
-            tracker.mark_task(task_id, 'done')
+    if sys.argv[1].lower() == 'mark-done':
+        task_id = int(sys.argv[-1])
+        tracker.mark_task(task_id, 'done')
+    
+if __name__ == "__main__":
+    
+    main()
+    

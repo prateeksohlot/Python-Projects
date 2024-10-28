@@ -1,16 +1,9 @@
 [
     {
         "id": 1,
-        "description": "Dance",
+        "description": "Buy groceries and cook dinner",
         "status": "todo",
-        "createdAt": "2024-10-28T02:42:06.944087",
-        "updateAt": "2024-10-28T02:42:06.944087"
-    },
-    {
-        "id": 2,
-        "description": "Code",
-        "status": "in-progress",
-        "createdAt": "2024-10-28T02:42:14.855122",
-        "updateAt": "2024-10-28T02:42:42.936363"
+        "createdAt": "2024-10-28T10:21:02.899269",
+        "updateAt": "2024-10-28T10:21:23.744615"
     }
 ]
