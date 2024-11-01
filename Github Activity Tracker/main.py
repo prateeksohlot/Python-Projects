@@ -81,10 +81,4 @@ StatusEvent: Triggered when the status of a commit is updated1
 
 
 '''
-    
-
-# print(event_dict)
-
-    # print(event['type'])
-    # print(event)
 
